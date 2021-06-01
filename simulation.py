@@ -2,12 +2,22 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+
 def sim_step(x, u, A, B, C, dt=0.001):
+    """
+    Simulate one time step for given system, with given state-space model
+    :param x: state at time t
+    :param u: input at time t
+    :param A: state transition matrix
+    :param B: input matrix
+    :param C: output matrix
+    :param dt: time-step size
+    :return: state at time t+dt, output at time t
+    """
     x_next = x + A@x + B*u
     y = C @ x
 
     return x_next, y
-
 
 
 # Parameters
@@ -24,14 +34,11 @@ S1 = 1+b  # m2
 S2 = 0.5+a   # m2
 
 
-
-
-
 # State model
-A = np.array([[-alph1*rho*g*S1,             alph1*rho*g*S1],
-              [alph1*rho*g*S2,  -(alph1 + alph2)*rho*g*S2]])
+A = np.array([[-alph1*rho*g/S1,             alph1*rho*g/S1],
+              [alph1*rho*g/S2,  -(alph1 + alph2)*rho*g/S2]])
 
-B = np.array([[S1],
+B = np.array([[1/S1],
               [0]])
 
 C = [0, alph2*rho*g]

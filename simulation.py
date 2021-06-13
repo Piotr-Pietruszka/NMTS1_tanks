@@ -207,49 +207,49 @@ plt.show()
 # Independent of controller
 #  -------------------------------------
 # Poles Continuous
-ax = plt.axes(xlim=(-.01, .01), ylim=(-.01, .01))
-for c in G_c.poles:
-    ax.plot(c.real, c.imag, "x")
-for c in G_c.zeros:
-    ax.plot(c.real, c.imag, "ro")
-ax.axhline(y=0, color='k')
-ax.axvline(x=0, color='k')
-ax.set_xlabel("Real")
-ax.set_ylabel("Imaginary")
-ax.set_title("s plane")
-ax.legend(["Poles"])
-plt.show()
+# ax = plt.axes(xlim=(-.01, .01), ylim=(-.01, .01))
+# for c in G_c.poles:
+#     ax.plot(c.real, c.imag, "x")
+# for c in G_c.zeros:
+#     ax.plot(c.real, c.imag, "ro")
+# ax.axhline(y=0, color='k')
+# ax.axvline(x=0, color='k')
+# ax.set_xlabel("Real")
+# ax.set_ylabel("Imaginary")
+# ax.set_title("s plane")
+# ax.legend(["Poles"])
+# plt.show()
 
 # Poles Discrete
-ax = plt.axes(xlim=(-1.5, 1.5), ylim=(-1.5,1.5))
-for c in G_d.poles:
-    ax.plot(c.real, c.imag, "x")
-for c in G_d.zeros:
-    ax.plot(c.real, c.imag, "ro")
-circ = plt.Circle((0, 0), radius=1, edgecolor='b', facecolor='None')
-ax.add_patch(circ)
-ax.axhline(y=0, color='k')
-ax.axvline(x=0, color='k')
-ax.set_xlabel("Real")
-ax.set_ylabel("Imaginary")
-ax.set_title("z plane")
-ax.legend(["Poles"])
-plt.show()
+# ax = plt.axes(xlim=(-1.5, 1.5), ylim=(-1.5,1.5))
+# for c in G_d.poles:
+#     ax.plot(c.real, c.imag, "x")
+# for c in G_d.zeros:
+#     ax.plot(c.real, c.imag, "ro")
+# circ = plt.Circle((0, 0), radius=1, edgecolor='b', facecolor='None')
+# ax.add_patch(circ)
+# ax.axhline(y=0, color='k')
+# ax.axvline(x=0, color='k')
+# ax.set_xlabel("Real")
+# ax.set_ylabel("Imaginary")
+# ax.set_title("z plane")
+# ax.legend(["Poles"])
+# plt.show()
 
 # Continuous time without controller
-plt.figure(0)
-plt.plot(step_t_cont, step_resp_cont)
-plt.xlabel('Time [s]')
-plt.ylabel('y[m^3/s]')
-plt.title("Continuous time response without controller")
-plt.show()
+# plt.figure(0)
+# plt.plot(step_t_cont, step_resp_cont)
+# plt.xlabel('Time [s]')
+# plt.ylabel('y[m^3/s]')
+# plt.title("Continuous time response without controller")
+# plt.show()
 
 # Discrete time without controller
-plt.figure(1)
-plt.step(step_t_disc, step_resp_disc)
-plt.xlabel('Time [s]')
-plt.ylabel('y[m^3/s]')
-plt.title("Discrete time response without controller")
-plt.show()
+# plt.figure(1)
+# plt.step(step_t_disc, step_resp_disc)
+# plt.xlabel('Time [s]')
+# plt.ylabel('y[m^3/s]')
+# plt.title("Discrete time response without controller")
+# plt.show()
 #  -------------------------------------
 

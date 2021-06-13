@@ -30,6 +30,9 @@
 \end{tabular} 
 
 \section{Modele stanowe bez kontrolera}
+
+\subsection{Model ciągłoczasowy}
+
 \begin{equation}\label{eq:q_y}
  \begin{array}{l}
   q = \alpha_1 \rho_f g (H_1 - H_2) \\
@@ -98,6 +101,7 @@ Model nie ma zer i posiada 2 bieguny rzeczywiste, ujemne: $-0.00859395$ i $-0.00
     \label{fig:step_resp_cont}
 \end{figure}
 
+\subsection{Model dyskretnoczasowy}
 Następnie model ciągłoczasowy przekształcono do dyskretnoczasowego modelu w przestrzeni stanu \ref{eq:ss_disc_val}, przy użyciu funkcji $cont2discrete$, z biblioteki $scipy.signal$. Użyto domyślnej metody dyskretyzacji (ang. zero-order hold). Przyjęto czas próbkowania równy $401.05s$, czyli $\frac{1}{15}$ czasu, w którym odpowiedź skokowa osiąga wartość 0.95.
 \begin{equation}\label{eq:ss_disc_val}
  \begin{array}{l}
@@ -145,6 +149,18 @@ Model dyskretnoczasowy posiada 2 bieguny: $0.81268849$ i $0.03185333$ oraz jedno
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+\section{Templates - do usuniecia}
 \begin{equation}\label{eq:standard_ss_template}
  \begin{array}{l}
   \mathbf{A} = \begin{bmatrix}  1 & 1 \\

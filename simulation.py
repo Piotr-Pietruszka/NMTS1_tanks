@@ -34,18 +34,19 @@ B = np.array([[1/S1],
 
 C = np.array([0.0, alph2*rho*g])
 D = np.array([0.0])
-# print(A)
-# print(B)
-# print(C)
-# print(D)
+print(A)
+print(B)
+print(C)
+print(D)
 
 
 # Continuous model
 G_c = sig.lti(A, B, C, D)
 num, den = sig.ss2tf(A, B, C, D)  # Transfer function from state space
 step_t_cont, step_resp_cont = G_c.step()  # Step response
-print(f"poles: {G_c.poles}")
-
+print(f"Continuous transfer function numerator, denominator:  \n{num, den}")
+print(f"Cont-time poles: {G_c.poles}")
+print(f"Cont-time zeros: {G_c.zeros}")
 
 # Get Ts = 1/15 * T_95
 Ts = 1.0/15.0*step_t_cont[np.where(step_resp_cont>0.95)[0][0]]
@@ -60,15 +61,17 @@ step_t_disc, step_resp_disc = G_d.step(n=Nsteps)  # Step response
 step_resp_disc = np.asarray(step_resp_disc).reshape(step_t_disc.shape)
 
 
-print(f"Discrete transfer function numerator, denominator:  \n{num_d, den_d }")
+
 # print(f"eigenvalues of A_d: \n{np.linalg.eigvals(A_d) }")
 # print(f"\nG_d:\n{G_d}")
-# print(f"\nDiscrete State Space model:")
-# print(f"\nA_d:\n{A_d}")
-# print(f"\nB_d:\n{B_d}")
-# print(f"\nC_d:\n{C_d}")
-# print(f"\nD_d:\n{D_d}")
-
+print(f"\nDiscrete State Space model:")
+print(f"\nA_d:\n{A_d}")
+print(f"\nB_d:\n{B_d}")
+print(f"\nC_d:\n{C_d}")
+print(f"\nD_d:\n{D_d}")
+print(f"Discrete transfer function numerator, denominator:  \n{num_d, den_d }")
+print(f"Discrete-time poles: {G_d.poles}")
+print(f"Discrete-time zeros: {G_d.zeros}")
 
 # Polynomials
 Aq = np.zeros(den_d.shape[0] + 1)
@@ -207,42 +210,46 @@ plt.show()
 ax = plt.axes(xlim=(-.01, .01), ylim=(-.01, .01))
 for c in G_c.poles:
     ax.plot(c.real, c.imag, "x")
+for c in G_c.zeros:
+    ax.plot(c.real, c.imag, "ro")
 ax.axhline(y=0, color='k')
 ax.axvline(x=0, color='k')
 ax.set_xlabel("Real")
 ax.set_ylabel("Imaginary")
 ax.set_title("s plane")
-ax.legend(["Poles - continuous-time model"])
+ax.legend(["Poles"])
 plt.show()
 
 # Poles Discrete
 ax = plt.axes(xlim=(-1.5, 1.5), ylim=(-1.5,1.5))
 for c in G_d.poles:
     ax.plot(c.real, c.imag, "x")
+for c in G_d.zeros:
+    ax.plot(c.real, c.imag, "ro")
 circ = plt.Circle((0, 0), radius=1, edgecolor='b', facecolor='None')
 ax.add_patch(circ)
 ax.axhline(y=0, color='k')
 ax.axvline(x=0, color='k')
 ax.set_xlabel("Real")
 ax.set_ylabel("Imaginary")
-ax.set_title("Z plane")
-ax.legend(["Poles - discrete-time model"])
+ax.set_title("z plane")
+ax.legend(["Poles"])
 plt.show()
 
 # Continuous time without controller
-# plt.figure(0)
-# plt.plot(step_t_cont, step_resp_cont)
-# plt.xlabel('Time [s]')
-# plt.ylabel('y[m^3/s]')
-# plt.title("Continuous time response without controller")
-# plt.show()
+plt.figure(0)
+plt.plot(step_t_cont, step_resp_cont)
+plt.xlabel('Time [s]')
+plt.ylabel('y[m^3/s]')
+plt.title("Continuous time response without controller")
+plt.show()
 
 # Discrete time without controller
-# plt.figure(1)
-# plt.step(step_t_disc, step_resp_disc)
-# plt.xlabel('Time [s]')
-# plt.ylabel('y[m^3/s]')
-# plt.title("Discrete time response without controller")
-# plt.show()
+plt.figure(1)
+plt.step(step_t_disc, step_resp_disc)
+plt.xlabel('Time [s]')
+plt.ylabel('y[m^3/s]')
+plt.title("Discrete time response without controller")
+plt.show()
 #  -------------------------------------
 

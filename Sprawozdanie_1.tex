@@ -37,7 +37,7 @@
 \end{array}
 \end{equation}
 
-
+Równania dynamiki dla zadanego systemu  \ref{eq:H_1_2}.
 \begin{equation}\label{eq:H_1_2}
  \begin{array}{l}
   \diff{H_1}{t} = \frac{u-q}{S_1} \\
@@ -45,22 +45,7 @@
  \end{array}
 \end{equation}
 
-Z \ref{eq:H_1_2} oraz \ref{eq:q_y}, przyjmując $H_1$ i $H_2$ jako zmienne stanu, uzyskano model stanowy \ref{eq:ss_cont}.
-\begin{equation}\label{eq:stan_disc}
- \begin{array}{l}
-  \mathbf{x}[n+1] = \mathbf{A}\mathbf{x}[n] + \mathbf{B}\mathbf{u}[n] \\
-  \mathbf{y}[n]= \mathbf{C} \mathbf{x}[n] + \mathbf{D}\mathbf{u}[n]
-\end{array}
-\end{equation}
-
-
-\begin{equation}\label{eq:stan_disc}
- \begin{array}{l}
-  \mathbf{x}[n+1] = \mathbf{A}\mathbf{x}[n] + \mathbf{B}\mathbf{u}[n] \\
-  \mathbf{y}[n]= \mathbf{C} \mathbf{x}[n] + \mathbf{D}\mathbf{u}[n]
-\end{array}
-\end{equation}
-
+Z równań \ref{eq:H_1_2} oraz \ref{eq:q_y}, przyjmując $H_1$ i $H_2$ jako zmienne stanu, uzyskano ciągłoczasowy model stanowy \ref{eq:ss_cont}.
 \begin{equation}\label{eq:ss_cont}
  \begin{array}{l}
  
@@ -75,6 +60,100 @@ Z \ref{eq:H_1_2} oraz \ref{eq:q_y}, przyjmując $H_1$ i $H_2$ jako zmienne stanu
  \begin{bmatrix} 0 \end{bmatrix} u[n]
  
  \end{array}
+\end{equation}
+
+Po podstawieniu wartości liczbowych, zgodnie ze standardowymi oznaczeniami macierzy uzyskano ciągłoczasowy model w przestrzeni stanu: \ref{eq:ss_cont_val}.
+
+\begin{equation}\label{eq:ss_cont_val}
+ \begin{array}{l}
+  \mathbf{A} = \begin{bmatrix}  -0.00111111 &  0.00111111 \\
+  							    0.004      & -0.008    
+  			   \end{bmatrix} \\ \\
+  \mathbf{B} = \begin{bmatrix} 0.11111111 \\ 0 \end{bmatrix} \\ \\
+  \mathbf{C} = \begin{bmatrix} 0 & 0.01 \end{bmatrix} \\ \\
+  \mathbf{D} = \begin{bmatrix} 0 \end{bmatrix} \\
+\end{array}
+\end{equation}
+
+Transmitancję układu w dziedzinie $s$ przedstawiono w równaniu: \ref{eq:cont_transf}.
+\begin{equation}\label{eq:cont_transf}
+ \begin{array}{l}
+  \frac{4.44444444 \cdot 10^{-6}}{ s^2 + 9.11111111\cdot 10^{-3}s + 4.44444444 \cdot 10^{-6}}
+\end{array}
+\end{equation}
+
+Model nie ma zer i posiada 2 bieguny rzeczywiste, ujemne: $-0.00859395$ i $-0.0005171$. Graficznie przedstawiono je na rys. \ref{fig:cont_poles}. Brak urojonych części biegunów oznacza, że odpowiedź skokowa układu (rys. \ref{fig:step_resp_cont}) nie posiada oscylacji. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/cont_poles.png}
+    \caption{Bieguny układu, model ciągłoczasowy}
+    \label{fig:cont_poles}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/step_resp_cont.png}
+    \caption{Odpowiedź skokowa, model ciągłoczasowy}
+    \label{fig:step_resp_cont}
+\end{figure}
+
+Następnie model ciągłoczasowy przekształcono do dyskretnoczasowego modelu w przestrzeni stanu \ref{eq:ss_disc_val}, przy użyciu funkcji $cont2discrete$, z biblioteki $scipy.signal$. Użyto domyślnej metody dyskretyzacji (ang. zero-order hold). Przyjęto czas próbkowania równy $401.05s$, czyli $\frac{1}{15}$ czasu, w którym odpowiedź skokowa osiąga wartość 0.95.
+\begin{equation}\label{eq:ss_disc_val}
+ \begin{array}{l}
+  \mathbf{A_d} = \begin{bmatrix}  0.75526739 & 0.10741822 \\
+  							     0.3867056  & 0.08927442 
+  			   \end{bmatrix} \\ \\
+  \mathbf{B_d} = \begin{bmatrix} 38.2046993 \\ 13.73143858 \end{bmatrix} \\ \\
+  \mathbf{C_d} = \begin{bmatrix} 0 & 0.01 \end{bmatrix} \\ \\
+  \mathbf{D_d} = \begin{bmatrix} 0 \end{bmatrix} \\
+\end{array}
+\end{equation}
+
+Transmitancję układu w dziedzinie $z$ przedstawiono w równaniu: \ref{eq:disc_transf}.
+\begin{equation}\label{eq:disc_transf}
+ \begin{array}{l}
+  \frac{0.13731439 z + 0.04403063}{ z^2 - 0.84454181 z + 0.02588683}
+\end{array}
+\end{equation}
+
+Model dyskretnoczasowy posiada 2 bieguny: $0.81268849$ i $0.03185333$ oraz jedno zero: $-0.32065564$. Graficznie przedstawiono je na rys. \ref{fig:disc_poles}. Odpowiedź skokową układu zamieszczono na rys. \ref{fig:disc_poles}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/disc_poles.png}
+    \caption{Bieguny układu, model dyskretnoczasowy}
+    \label{fig:disc_poles}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/step_resp_disc.png}
+    \caption{Odpowiedź skokowa, model dyskretnoczasowy}
+    \label{fig:step_resp_disc}
+\end{figure}
+
+
+
+
+\begin{equation}\label{eq:stan_disc}
+ \begin{array}{l}
+  \mathbf{x}[n+1] = \mathbf{A}\mathbf{x}[n] + \mathbf{B}\mathbf{u}[n] \\
+  \mathbf{y}[n]= \mathbf{C} \mathbf{x}[n] + \mathbf{D}\mathbf{u}[n]
+\end{array}
+\end{equation}
+
+
+
+\begin{equation}\label{eq:standard_ss_template}
+ \begin{array}{l}
+  \mathbf{A} = \begin{bmatrix}  1 & 1 \\
+  							   1 & 1 
+  			   \end{bmatrix} \\ \\
+  \mathbf{B} = \begin{bmatrix} 1 \\ 1 \end{bmatrix} \\ \\
+  \mathbf{C} = \begin{bmatrix} 1 & 1 \end{bmatrix} \\ \\
+  \mathbf{D} = \begin{bmatrix} 0 \end{bmatrix} \\
+\end{array}
 \end{equation}
 
 

@@ -14,7 +14,7 @@ g = 10  # m/s2
 rho = 1000  # kg/m3
 alph1 = 1e-6  # m3/(s*Pa)
 alph2 = 1e-6  # m3/(s*Pa)
-Nsteps = 30
+Nsteps = 20
 
 # 171842,172118
 a = 2
@@ -45,6 +45,8 @@ G_c = sig.lti(A, B, C, D)
 num, den = sig.ss2tf(A, B, C, D)  # Transfer function from state space
 step_t_cont, step_resp_cont = G_c.step()  # Step response
 print(f"poles: {G_c.poles}")
+
+
 # Get Ts = 1/15 * T_95
 Ts = 1.0/15.0*step_t_cont[np.where(step_resp_cont>0.95)[0][0]]
 print(f"Ts: {Ts}")
@@ -79,17 +81,18 @@ Bq = np.trim_zeros(num_d[0], trim='f')
 
 # Predictive control
 
-# Parameters
-Hy = 10
-Hu = 8
-ro = 0.1
-
 # Constrains
 u_min = 0.0  # m3/s
 u_max = 3.0  # m3/s
 du_min = -2.0  # m3/s2
 du_max = 2.0  # m3/s2
 
+#  -------------------------------------
+# Parameters
+Hy = 9
+Hu = 6
+ro = 0.1
+constr = False
 
 # C_A, C_B, H_A, H_B matrices
 first_c = np.zeros(Hy)  # first column
@@ -125,7 +128,7 @@ du = np.zeros(Nsteps, dtype=np.float32)
 x = np.zeros((Nsteps, A_d.shape[0]), dtype=np.float32)
 t = np.arange(Nsteps)
 
-constr = False
+
 for i in range(1, Nsteps):
     # Reference
     yr = y_ref[i+1:i+1+Hy]
@@ -149,7 +152,7 @@ for i in range(1, Nsteps):
     # Find optimal du
     W = 2 * (H.T @ H + ro*np.eye(H.shape[1]))
     V = -2 * H.T @ (yr - P1 @ y_prev - P2 @ du_prev)
-    if constr is False:
+    if not constr:
         d_u_optimal = -inv(W) @ V
     else:
         Mt = np.tril(np.ones((Hu, Hu)))
@@ -163,38 +166,27 @@ for i in range(1, Nsteps):
         x[i+1] = A_d @ x[i] + np.transpose(B_d * u[i])
         y[i+1] = C_d @ x[i+1]
 
+#  -------------------------------------
+
 
 # Plots
 
-# Continuous time without controller
-# plt.figure(0)
-# plt.plot(step_t_cont, step_resp_cont)
-# plt.xlabel('Time [s]')
-# plt.ylabel('y[m^3/s]')
-# plt.title("Continuous time response without controller")
-
-# Discrete time without controller
-# plt.figure(1)
-# plt.step(step_t_disc, step_resp_disc)
-# plt.xlabel('Time [s]')
-# plt.ylabel('y[m^3/s]')
-# plt.title("Discrete time response without controller")
-# plt.show()
-
+# Controller dependent
+#  -------------------------------------
 # Controller - output
-# plt.figure(2)
-# plt.step(t, y)
-# plt.step(t, y_ref[:Nsteps])
-# plt.xlabel('Time [s]')
-# plt.ylabel('y[m^3/s]')
-# if constr:
-#     plt.title("Response with controller, with constraints")
-# else:
-#     plt.title("Response with controller, without constraints")
-# plt.legend(["y", "y_ref"])
-# plt.show()
+plt.figure(2)
+plt.step(t, y)
+plt.step(t, y_ref[:Nsteps])
+plt.xlabel('Time [s]')
+plt.ylabel('y[m^3/s]')
+if constr:
+    plt.title("Response with controller, with constraints")
+else:
+    plt.title("Response with controller, without constraints")
+plt.legend(["y", "y_ref"])
+plt.show()
 
-# Controller - input
+# Controller - control signal
 plt.figure(3)
 plt.step(t, u)
 plt.step(t, du)
@@ -206,6 +198,51 @@ else:
     plt.title("Control signal with controller, without constraints")
 plt.legend(["u", "du"])
 plt.show()
+#  -------------------------------------
 
 
+# Independent of controller
+#  -------------------------------------
+# Poles Continuous
+ax = plt.axes(xlim=(-.01, .01), ylim=(-.01, .01))
+for c in G_c.poles:
+    ax.plot(c.real, c.imag, "x")
+ax.axhline(y=0, color='k')
+ax.axvline(x=0, color='k')
+ax.set_xlabel("Real")
+ax.set_ylabel("Imaginary")
+ax.set_title("s plane")
+ax.legend(["Poles - continuous-time model"])
+plt.show()
+
+# Poles Discrete
+ax = plt.axes(xlim=(-1.5, 1.5), ylim=(-1.5,1.5))
+for c in G_d.poles:
+    ax.plot(c.real, c.imag, "x")
+circ = plt.Circle((0, 0), radius=1, edgecolor='b', facecolor='None')
+ax.add_patch(circ)
+ax.axhline(y=0, color='k')
+ax.axvline(x=0, color='k')
+ax.set_xlabel("Real")
+ax.set_ylabel("Imaginary")
+ax.set_title("Z plane")
+ax.legend(["Poles - discrete-time model"])
+plt.show()
+
+# Continuous time without controller
+# plt.figure(0)
+# plt.plot(step_t_cont, step_resp_cont)
+# plt.xlabel('Time [s]')
+# plt.ylabel('y[m^3/s]')
+# plt.title("Continuous time response without controller")
+# plt.show()
+
+# Discrete time without controller
+# plt.figure(1)
+# plt.step(step_t_disc, step_resp_disc)
+# plt.xlabel('Time [s]')
+# plt.ylabel('y[m^3/s]')
+# plt.title("Discrete time response without controller")
+# plt.show()
+#  -------------------------------------
 

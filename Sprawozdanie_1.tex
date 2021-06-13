@@ -1,0 +1,84 @@
+\documentclass{article}
+
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+%\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage[polish]{babel}
+\usepackage{mathtools}
+\usepackage[thinc]{esdiff}
+\usepackage{graphicx} 
+
+\usepackage{float}
+
+\usepackage{geometry}
+
+\begin{document}
+\newgeometry{tmargin =3cm, bmargin=3cm, lmargin=3cm, rmargin=3cm}
+\begin{tabular}{|c|c|c|}
+\hline 
+\multicolumn{3}{|c|}{\huge Sprawozdanie } \\ 
+\hline 
+\multicolumn{3}{|c|}{\LARGE Projekt 1  NMTS} \\ 
+\hline 
+\Large Przygotowali: &\Large Piotr Pietruszka 171842 &\Large Marcin Wankiewicz 172118  \\ 
+\hline 
+\Large Kierunek: ACiR  \\ 
+\hline 
+ 
+\end{tabular} 
+
+\section{Modele stanowe bez kontrolera}
+\begin{equation}\label{eq:q_y}
+ \begin{array}{l}
+  q = \alpha_1 \rho_f g (H_1 - H_2) \\
+  y = \alpha_2 \rho_f g H_2
+\end{array}
+\end{equation}
+
+
+\begin{equation}\label{eq:H_1_2}
+ \begin{array}{l}
+  \diff{H_1}{t} = \frac{u-q}{S_1} \\
+  \diff{H_2}{t} = \frac{q-y}{S_2}
+ \end{array}
+\end{equation}
+
+Z \ref{eq:H_1_2} oraz \ref{eq:q_y}, przyjmując $H_1$ i $H_2$ jako zmienne stanu, uzyskano model stanowy \ref{eq:ss_cont}.
+\begin{equation}\label{eq:stan_disc}
+ \begin{array}{l}
+  \mathbf{x}[n+1] = \mathbf{A}\mathbf{x}[n] + \mathbf{B}\mathbf{u}[n] \\
+  \mathbf{y}[n]= \mathbf{C} \mathbf{x}[n] + \mathbf{D}\mathbf{u}[n]
+\end{array}
+\end{equation}
+
+
+\begin{equation}\label{eq:stan_disc}
+ \begin{array}{l}
+  \mathbf{x}[n+1] = \mathbf{A}\mathbf{x}[n] + \mathbf{B}\mathbf{u}[n] \\
+  \mathbf{y}[n]= \mathbf{C} \mathbf{x}[n] + \mathbf{D}\mathbf{u}[n]
+\end{array}
+\end{equation}
+
+\begin{equation}\label{eq:ss_cont}
+ \begin{array}{l}
+ 
+ \begin{bmatrix} \dot{H_1} \\ \dot{H_2} \end{bmatrix}  = 
+ \begin{bmatrix} -\frac{\alpha_1 \rho_f g}{S_1} & \frac{\alpha_1 \rho_f g}{S_1}\\ 
+  \frac{\alpha_1 \rho_f g}{S_2} & -\frac{\alpha_1 \rho_f g + \alpha_2 \rho_f g}{S_2} 
+ \end{bmatrix}   \begin{bmatrix} H_1 \\ H_2 \end{bmatrix} + 
+ \begin{bmatrix}\frac{1}{S_1} \\ 0\end{bmatrix}u  \\
+ 
+ y[n]  = \begin{bmatrix} 0 & \alpha_1 \rho_f g \end{bmatrix}
+ \begin{bmatrix} H_1 \\ H_2 \end{bmatrix} + 
+ \begin{bmatrix} 0 \end{bmatrix} u[n]
+ 
+ \end{array}
+\end{equation}
+
+
+
+\end{document}
+
+

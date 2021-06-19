@@ -9,6 +9,7 @@
 \usepackage{mathtools}
 \usepackage[thinc]{esdiff}
 \usepackage{graphicx} 
+\usepackage{subfig}
 
 \usepackage{float}
 
@@ -150,29 +151,103 @@ Model dyskretnoczasowy posiada 2 bieguny: $0.81268849$ i $0.03185333$ oraz jedno
 
 
 
+\section{Obiekt z kontrolerem predykcyjnym}
 
+W tej części sprawozdania przedstawiona jest analiza różnych przypadków sterowania przy użyciu kontrolera predykcyjnego przy zmiennych parametrach systemu. Dodatkowo, pokazane zostało działanie zaimplementowanych ograniczeń.
 
+\subsection{Wpływ parametrów $H_y$ i $H_u$ na sygnał wyjściowy i sterujący}
 
+\subsubsection{Przypadek bez ograniczeń}
 
+Jak widać na rys. \ref{fig:1bez} oraz rys. \ref{fig:2bez}, przy stałej, niewielkiej wartości parametru $\rho$, parametry $H_y$ oraz $H_u$ mają znikomy wpływ na odpowiedzi oraz sygnały sterujące układu. Znaczne ich zwiększenie spowodowało jedynie bardzo małe skrócenie czasu ustalania układu kosztem przeregulowania rzędu 5\%. Można to porównać do zwiększenia członu proporcjonalnego $P$ klasycznego sterownika. Podobne wnioski można zaobserwować dla przypadków z rys. \ref{fig:3bez} oraz rys. \ref{fig:4bez}, dla większego parametru $\rho$. Zwiększenie badanych parametrów przyspieszyło nieznacznie układ, ale przeregulowanie również się zmniejszyło. Prowadzi to więc do wniosków, że zwiększenie parametrów $H_y$ oraz $H_u$ prowadzi w ogólnym przypadku do nieznacznego przyspieszenia odpowiedzi skokowej układu.
 
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/1bez.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/1ubez.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy pierwszym zestawie parametrów, bez ograniczeń, $\rho=0.1$}
+    \label{fig:1bez}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/3bez.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/3ubez.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy drugim zestawie parametrów, bez ograniczeń, $\rho=0.1$}
+    \label{fig:2bez}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/a1.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/a2.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy pierwszym zestawie parametrów, bez ograniczeń, $\rho=6$}
+    \label{fig:3bez}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/b1.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/b2.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy drugim zestawie parametrów, bez ograniczeń, $\rho=6$}
+    \label{fig:4bez}
+\end{figure}
 
+\subsubsection{Przypadek z ograniczeniami}
 
-\section{Templates - do usuniecia}
-\begin{equation}\label{eq:standard_ss_template}
- \begin{array}{l}
-  \mathbf{A} = \begin{bmatrix}  1 & 1 \\
-  							   1 & 1 
-  			   \end{bmatrix} \\ \\
-  \mathbf{B} = \begin{bmatrix} 1 \\ 1 \end{bmatrix} \\ \\
-  \mathbf{C} = \begin{bmatrix} 1 & 1 \end{bmatrix} \\ \\
-  \mathbf{D} = \begin{bmatrix} 0 \end{bmatrix} \\
-\end{array}
-\end{equation}
+Przy aktywnych ograniczeniach układ zachowuje się w zasadzie tak samo. Jest to spowodowane tym, że układ ich nie przekracza, lub przekracza jedynie nieznacznie. To, że działają poprawnie pokazuje konfrontacja przypadków z rys. \ref{fig:1bez}b oraz rys. \ref{fig:1z}b - na pierwszym z nich sygnał $u_d$ nieznacznie przekracza wartość ograniczenia (2). Gdy ograniczenia zostały aktywowane, sygnał ten nie przekroczył tej wartości, co dowodzi poprawnego działania ograniczeń. Zmiana w przebiegu sygnału $u_d$ nie jest jednak na tyle duża, by spowodować zauważalne zmiany w sygnale wyjściowym $y$.
 
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/1z.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/1uz.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy pierwszym zestawie parametrów, z ograniczeniami, $\rho=0.1$}
+    \label{fig:1z}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/3z.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/3uz.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy drugim zestawie parametrów, z ograniczeniami, $\rho=0.1$}
+    \label{fig:2z}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/c1.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/c2.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy pierwszym zestawie parametrów, z ograniczeniami, $\rho=6$}
+    \label{fig:1z}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/d1.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/d2.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy drugim zestawie parametrów, z ograniczeniami, $\rho=6$}
+    \label{fig:2z}
+\end{figure}
+
+\subsection{Wpływ wartości parametru $\rho$ na sygnał wyjściowy i sterujący}
+W tym rozdziale pokazane zostały przebiegi wyjściowe oraz sterujące układu przy stałych wartościach $H_y$ i $H_u$, a zmiennej wartości $\rho$. Nie dokonano tu podziału na przypadek z ograniczeniami i bez nich, gdyż sygnały nie dochodzą do zadanych w założeniach projektowych ograniczeń, przez co układ zachowuje się w obu przypadkach identycznie.
+\newline Jak widać na zamieszczonych w tym rozdziale rysunkach, wzrost parametru $\rho$ powoduje ,,złagodzenie'' sygnału wejściowego oraz sygnałów sterujących. Warto jednak przytoczyć w tym miejscu wnioski z poprzedniego rozdziału, że wzrost $\rho$ powoduje większą czułość układu na zmiany wartości $H_y$ i $H_u$. Mimo to, jak pokazuje ten rozdział, samo zwiększenie $\rho$ przy niezmiennych pozostałych parametrach nie powoduje szybszego czasu ustalania oraz większego przeregulowania, wręcz przeciwnie.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/ro1bez.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/ro1ubez.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy pierwszej wartości $\rho$}
+    \label{fig:1z}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/ro2bez.png} }}
+    \subfloat[\centering]{{\includegraphics[width=7.5cm]{img/ro2ubez.png} }}
+    \caption{Odpowiedź (a) oraz sygnały sterujące układu (b) przy drugiej wartości $\rho$}
+    \label{fig:2z}
+\end{figure}
 
 \end{document}
 

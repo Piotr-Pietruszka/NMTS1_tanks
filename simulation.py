@@ -14,7 +14,7 @@ g = 10  # m/s2
 rho = 1000  # kg/m3
 alph1 = 1e-6  # m3/(s*Pa)
 alph2 = 1e-6  # m3/(s*Pa)
-Nsteps = 20
+Nsteps = 40
 
 # 171842,172118
 a = 2
@@ -92,10 +92,10 @@ du_max = 2.0  # m3/s2
 
 #  -------------------------------------
 # Parameters
-Hy = 9
-Hu = 6
-ro = 0.1
-constr = False
+Hy = 100
+Hu = 100
+ro = 6
+constr = True
 
 # C_A, C_B, H_A, H_B matrices
 first_c = np.zeros(Hy)  # first column
@@ -183,9 +183,9 @@ plt.step(t, y_ref[:Nsteps])
 plt.xlabel('Time [s]')
 plt.ylabel('y[m^3/s]')
 if constr:
-    plt.title("Response with controller, with constraints")
+    plt.title("Response with controller, with constraints, Hy=%.1f, Hu=%.1f, ro=%.1f" % (Hy, Hu, ro))
 else:
-    plt.title("Response with controller, without constraints")
+    plt.title("Response with controller, without constraints, Hy=%.1f, Hu=%.1f, ro=%.1f" % (Hy, Hu, ro))
 plt.legend(["y", "y_ref"])
 plt.show()
 
@@ -196,9 +196,9 @@ plt.step(t, du)
 plt.xlabel('Time [s]')
 plt.ylabel('y[m^3/s]')
 if constr:
-    plt.title("Control signal with controller, with constraints")
+    plt.title("Control signal with controller, with constraints, Hy=%.1f, Hu=%.1f, ro=%.1f" % (Hy, Hu, ro))
 else:
-    plt.title("Control signal with controller, without constraints")
+    plt.title("Control signal with controller, without constraints, Hy=%.1f, Hu=%.1f, ro=%.1f" % (Hy, Hu, ro))
 plt.legend(["u", "du"])
 plt.show()
 #  -------------------------------------
